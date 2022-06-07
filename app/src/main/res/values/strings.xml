@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Train Times</string>
+
+    <string name="search">Search</string>
+    <string name="route_planner">Planner</string>
+    <string name="settings">Settings</string>
+    <string name="listing">Listing</string>
+    <string name="details">Details</string>
+    <string name="station_search">Station Search</string>
+</resources>

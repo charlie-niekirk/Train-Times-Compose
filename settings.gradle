@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+enableFeaturePreview('VERSION_CATALOGS')
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+    versionCatalogs {
+        libs {
+            version('orbit', '4.3.2')
+            version('moshi', '1.13.0')
+            alias('orbit-core').to('org.orbit-mvi', 'orbit-core').versionRef('orbit')
+            alias('orbit-viewmodel').to('org.orbit-mvi', 'orbit-viewmodel').versionRef('orbit')
+            alias('orbit-compose').to('org.orbit-mvi', 'orbit-compose').versionRef('orbit')
+            alias('moshi-core').to('com.squareup.moshi', 'moshi').versionRef('moshi')
+            alias('moshi-kotlin').to('com.squareup.moshi', 'moshi-kotlin').versionRef('moshi')
+            alias('moshi-codegen').to('com.squareup.moshi', 'moshi-kotlin-codegen').versionRef('moshi')
+        }
+    }
+}
+rootProject.name = "Train Times"
+include ':app'
