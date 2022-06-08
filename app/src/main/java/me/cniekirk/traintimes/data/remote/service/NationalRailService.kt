@@ -1,11 +1,15 @@
 package me.cniekirk.traintimes.data.remote.service
 
 import me.cniekirk.traintimes.data.remote.model.DepartureBoard
+import me.cniekirk.traintimes.data.remote.model.Station
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface NationalRailService {
+
+    @GET("crs")
+    suspend fun getStations(): Response<List<Station>>
 
     @GET("staffdepartures/{crs}")
     suspend fun getDepartures(

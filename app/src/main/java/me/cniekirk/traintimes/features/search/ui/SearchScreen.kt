@@ -51,12 +51,12 @@ fun SearchContent(
             modifier = Modifier.padding(top = 16.dp, start = 16.dp)
         )
         SelectableItem(
-            text = state.value.departureStation.name,
+            text = state.value.departureStation.stationName,
             modifier = Modifier.padding(top = 16.dp),
             onDepartureClick
         )
         SelectableItem(
-            text = state.value.destinationStation.name,
+            text = state.value.destinationStation.stationName,
             modifier = Modifier.padding(top = 12.dp),
             onArrivalClick
         )

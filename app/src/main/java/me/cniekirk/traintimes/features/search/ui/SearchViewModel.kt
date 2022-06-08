@@ -20,8 +20,8 @@ class SearchViewModel @Inject constructor(
     override val container = container<SearchState, SearchSideEffect>(SearchState())
 
     fun getDepartures() = intent {
-        if (state.departureStation.code.isNotEmpty()) {
-            getDepartureBoardUseCase(state.departureStation.code).collect {
+        if (state.departureStation.crsCode.isNotEmpty()) {
+            getDepartureBoardUseCase(state.departureStation.crsCode).collect {
                 reduce { state.copy(results = it) }
             }
         }
