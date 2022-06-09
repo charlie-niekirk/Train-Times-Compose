@@ -13,13 +13,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import me.cniekirk.traintimes.R
+import me.cniekirk.traintimes.data.remote.model.Station
 import me.cniekirk.traintimes.features.search.mvi.SearchSideEffect
 import me.cniekirk.traintimes.features.search.mvi.SearchState
+import me.cniekirk.traintimes.navigation.ObserveResult
 import me.cniekirk.traintimes.navigation.Screen
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -27,6 +30,13 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun SearchScreen(navController: NavController, viewModel: SearchViewModel) {
     val state = viewModel.collectAsState()
+
+    navController.ObserveResult<Station>(LocalContext.current.getString(R.string.selected_station_key)) { station ->
+        station?.let {
+
+        }
+    }
+
     viewModel.collectSideEffect { handleSideEffect(navController, it) }
 
     SearchContent(

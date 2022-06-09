@@ -49,6 +49,9 @@ private fun handleSideEffect(navController: NavController, stationSearchSideEffe
     when (stationSearchSideEffect) {
         is StationSearchSideEffect.StationSelected -> {
             // TODO: Add args to savedStateHandle
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set("selected_station", stationSearchSideEffect.station)
             navController.popBackStack()
         }
     }
