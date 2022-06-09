@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.cniekirk.traintimes.features.search.ui.SearchScreen
 import me.cniekirk.traintimes.features.search.ui.SearchViewModel
 import me.cniekirk.traintimes.features.stationsearch.ui.StationSearchScreen
+import me.cniekirk.traintimes.features.stationsearch.ui.StationSearchViewModel
 import me.cniekirk.traintimes.navigation.Screen
 import me.cniekirk.traintimes.ui.theme.TrainTimesTheme
 
@@ -51,7 +52,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             TrainTimesTheme {
                 Scaffold(
-                    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     bottomBar = { NavBar(navController, items) }
                 ) { innerPadding ->
                     AnimatedNavHost(navController, startDestination = Screen.Search.route, Modifier.padding(innerPadding)) {
@@ -123,7 +126,8 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         ) {
-                            StationSearchScreen(navController, searchViewModel)
+                            val viewModel = hiltViewModel<StationSearchViewModel>()
+                            StationSearchScreen(navController, viewModel)
                         }
                         composable(
                             Screen.Settings.route,
