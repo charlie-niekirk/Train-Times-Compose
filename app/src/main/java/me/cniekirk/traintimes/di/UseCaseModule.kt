@@ -7,6 +7,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.cniekirk.traintimes.domain.usecase.GetDepartureBoardUseCase
 import me.cniekirk.traintimes.domain.usecase.GetDepartureBoardUseCaseImpl
+import me.cniekirk.traintimes.domain.usecase.GetStationsUseCase
+import me.cniekirk.traintimes.domain.usecase.GetStationsUseCaseImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -15,4 +17,8 @@ class UseCaseModule {
     @Provides
     fun provideGetDepartureBoardUseCase(getDepartureBoardUseCaseImpl: GetDepartureBoardUseCaseImpl): GetDepartureBoardUseCase
         = getDepartureBoardUseCaseImpl
+
+    @Provides
+    fun provideGetStationsUseCase(getStationsUseCaseImpl: GetStationsUseCaseImpl): GetStationsUseCase
+        = getStationsUseCaseImpl
 }

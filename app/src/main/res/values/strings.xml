@@ -8,5 +8,8 @@
     <string name="details">Details</string>
     <string name="station_search">Station Search</string>
 
-    <string name="selected_station_key">SelectedStation</string>
+    <string name="departure_selected_station_key">DepSelectedStation</string>
+    <string name="destination_selected_station_key">DestSelectedStation</string>
+    <string name="stations_title">Stations</string>
+    <string name="error_station_not_selected">You must select a departure station!</string>
 </resources>

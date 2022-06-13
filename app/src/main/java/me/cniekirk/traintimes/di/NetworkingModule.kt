@@ -1,12 +1,14 @@
 package me.cniekirk.traintimes.di
 
 import android.content.Context
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import me.cniekirk.traintimes.BuildConfig
 import me.cniekirk.traintimes.data.remote.service.NationalRailService
 import me.cniekirk.traintimes.data.repository.NationalRailRepositoryImpl
 import me.cniekirk.traintimes.domain.repository.NationalRailRepository
@@ -27,10 +29,11 @@ class NetworkingModule {
 
     @Provides
     fun provideOkHttp(cache: Cache): OkHttpClient {
-        return OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
-            .build()
+        if (BuildConfig.DEBUG) builder.addInterceptor(OkHttpProfilerInterceptor())
+        return builder.build()
     }
 
     @Provides

@@ -10,7 +10,7 @@ import me.cniekirk.traintimes.R
 
 sealed class Screen(val route: String, @StringRes val name: Int, val icon: ImageVector) {
     object Search : Screen(route = "search", R.string.search, Icons.Filled.Search)
-    object StationSearch : Screen(route = "stationSearch", R.string.station_search, Icons.Filled.Settings)
+    object StationSearch : Screen(route = "stationSearch/{stationType}", R.string.station_search, Icons.Filled.Settings)
     object RoutePlanner : Screen(route = "routePlanner", R.string.route_planner, Icons.Filled.Add)
     object TrainListing : Screen(route = "trainListing/{}", R.string.listing, Icons.Filled.Settings)
     object Settings : Screen(route = "settings", R.string.settings, Icons.Filled.Settings)

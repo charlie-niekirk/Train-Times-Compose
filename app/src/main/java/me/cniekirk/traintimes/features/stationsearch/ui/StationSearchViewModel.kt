@@ -1,6 +1,7 @@
 package me.cniekirk.traintimes.features.stationsearch.ui
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.cniekirk.traintimes.data.remote.model.Station
@@ -16,9 +17,9 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
+@HiltViewModel
 class StationSearchViewModel @Inject constructor(
-    private val getStationsUseCase: GetStationsUseCase,
-    @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
+    private val getStationsUseCase: GetStationsUseCase
 ): ViewModel(), ContainerHost<StationSearchState, StationSearchSideEffect> {
 
     override val container = container<StationSearchState, StationSearchSideEffect>(StationSearchState()) {
@@ -26,10 +27,8 @@ class StationSearchViewModel @Inject constructor(
     }
 
     private fun getStations() = intent {
-        withContext(coroutineDispatcher) {
-            getStationsUseCase().collect {
-                reduce { state.copy(stationList = it) }
-            }
+        getStationsUseCase().collect {
+            reduce { state.copy(stationList = it) }
         }
     }
 

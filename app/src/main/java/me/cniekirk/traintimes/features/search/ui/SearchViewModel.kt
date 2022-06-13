@@ -2,6 +2,8 @@ package me.cniekirk.traintimes.features.search.ui
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import me.cniekirk.traintimes.data.remote.model.Station
 import me.cniekirk.traintimes.domain.usecase.GetDepartureBoardUseCase
 import me.cniekirk.traintimes.features.search.mvi.SearchSideEffect
 import me.cniekirk.traintimes.features.search.mvi.SearchState
@@ -20,10 +22,24 @@ class SearchViewModel @Inject constructor(
     override val container = container<SearchState, SearchSideEffect>(SearchState())
 
     fun getDepartures() = intent {
+        println("HERE")
         if (state.departureStation.crsCode.isNotEmpty()) {
-            getDepartureBoardUseCase(state.departureStation.crsCode).collect {
-                reduce { state.copy(results = it) }
+            println("HERE 1")
+            if (state.destinationStation.crsCode.isNotEmpty()) {
+                println("HERE 2")
+                getDepartureBoardUseCase(state.departureStation.crsCode, state.destinationStation.crsCode).collect {
+                    reduce { state.copy(results = it) }
+                }
+            } else {
+                println("HERE 3")
+                getDepartureBoardUseCase(state.departureStation.crsCode).collect {
+                    println("HERE 4")
+                    reduce { state.copy(results = it) }
+                }
             }
+        } else {
+            println("HERE 5")
+            postSideEffect(SearchSideEffect.NoDepartureSpecifiedError)
         }
     }
 
@@ -33,5 +49,13 @@ class SearchViewModel @Inject constructor(
 
     fun onArrivalClick() = intent {
         postSideEffect(SearchSideEffect.NavigateToArrivalStationSearch)
+    }
+
+    fun onDepartureChanged(station: Station) = intent {
+        reduce { state.copy(departureStation = station) }
+    }
+
+    fun onArrivalChanged(station: Station) = intent {
+        reduce { state.copy(destinationStation = station) }
     }
 }

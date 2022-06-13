@@ -16,6 +16,15 @@ dependencyResolutionManagement {
         libs {
             version('orbit', '4.3.2')
             version('moshi', '1.13.0')
+            version('retrofit', '2.9.0')
+            version('hilt', '2.41')
+            alias('hilt-core').to('com.google.dagger', 'hilt-android').versionRef('hilt')
+            alias('hilt-compiler').to('com.google.dagger', 'hilt-compiler').versionRef('hilt')
+            alias('hilt-testing').to('com.google.dagger', 'hilt-android-testing').versionRef('hilt')
+            alias('hilt-testing-compiler').to('com.google.dagger', 'hilt-android-compiler').versionRef('hilt')
+
+            alias('retrofit-core').to('com.squareup.retrofit2', 'retrofit').versionRef('retrofit')
+            alias('retrofit-converter').to('com.squareup.retrofit2', 'converter-moshi').versionRef('retrofit')
             alias('orbit-core').to('org.orbit-mvi', 'orbit-core').versionRef('orbit')
             alias('orbit-viewmodel').to('org.orbit-mvi', 'orbit-viewmodel').versionRef('orbit')
             alias('orbit-compose').to('org.orbit-mvi', 'orbit-compose').versionRef('orbit')

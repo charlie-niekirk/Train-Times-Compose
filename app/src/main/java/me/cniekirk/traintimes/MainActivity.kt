@@ -13,23 +13,25 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
+import me.cniekirk.traintimes.data.remote.model.Station
 import me.cniekirk.traintimes.features.search.ui.SearchScreen
 import me.cniekirk.traintimes.features.search.ui.SearchViewModel
 import me.cniekirk.traintimes.features.stationsearch.ui.StationSearchScreen
 import me.cniekirk.traintimes.features.stationsearch.ui.StationSearchViewModel
+import me.cniekirk.traintimes.navigation.ObserveResult
 import me.cniekirk.traintimes.navigation.Screen
 import me.cniekirk.traintimes.ui.theme.TrainTimesTheme
 
@@ -47,9 +49,7 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            val searchViewModel = hiltViewModel<SearchViewModel>()
-
-            val navController = rememberNavController()
+            val navController = rememberAnimatedNavController()
             TrainTimesTheme {
                 Scaffold(
                     modifier = Modifier
@@ -63,108 +63,125 @@ class MainActivity : ComponentActivity() {
                             enterTransition = {
                                 when (targetState.destination.route) {
                                     Screen.StationSearch.route -> {
-                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
+                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left, tween(300))
                                     }
                                     else -> null
                                 }
                             },
-                            exitTransition = {
-                                when (targetState.destination.route) {
-                                    Screen.StationSearch.route -> {
-                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
-                                    }
-                                    else -> null
-                                }
-                            },
-                            popEnterTransition = {
-                                when (initialState.destination.route) {
-                                    Screen.StationSearch.route ->
-                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
-                                    else -> null
-                                }
-                            },
+//                            exitTransition = {
+//                                when (targetState.destination.route) {
+//                                    Screen.StationSearch.route -> {
+//                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, tween(300))
+//                                    }
+//                                    else -> null
+//                                }
+//                            },
+//                            popEnterTransition = {
+//                                when (initialState.destination.route) {
+//                                    Screen.StationSearch.route ->
+//                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right, tween(300))
+//                                    else -> null
+//                                }
+//                            },
                             popExitTransition = {
                                 when (targetState.destination.route) {
                                     Screen.StationSearch.route ->
-                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
+                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, tween(300))
                                     else -> null
                                 }
                             }
                         ) {
-                            SearchScreen(navController, searchViewModel)
+                            val searchViewModel = hiltViewModel<SearchViewModel>()
+                            SearchScreen(
+                                searchViewModel,
+                                { navController.navigate(Screen.StationSearch.route.replace("{stationType}", "DepSelectedStation")) },
+                                { navController.navigate(Screen.StationSearch.route.replace("{stationType}", "DestSelectedStation")) }
+                            )
+                            navController.ObserveResult<Station>(LocalContext.current.getString(R.string.departure_selected_station_key)) { station ->
+                                station?.let {
+                                    searchViewModel.onDepartureChanged(it)
+                                }
+                            }
+
+                            navController.ObserveResult<Station>(LocalContext.current.getString(R.string.destination_selected_station_key)) { station ->
+                                station?.let {
+                                    searchViewModel.onArrivalChanged(it)
+                                }
+                            }
                         }
                         composable(
                             Screen.StationSearch.route,
                             enterTransition = {
-                                when (targetState.destination.route) {
+                                when (initialState.destination.route) {
                                     Screen.Search.route -> {
-                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
+                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Up, tween(300))
                                     }
                                     else -> null
+
                                 }
                             },
                             exitTransition = {
-                                when (targetState.destination.route) {
+                                when (initialState.destination.route) {
                                     Screen.Search.route -> {
-                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
+                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Up, tween(300))
                                     }
                                     else -> null
                                 }
                             },
                             popEnterTransition = {
-                                when (initialState.destination.route) {
+                                when (targetState.destination.route) {
                                     Screen.Search.route ->
-                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
+                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Down, tween(300))
                                     else -> null
                                 }
                             },
                             popExitTransition = {
                                 when (targetState.destination.route) {
                                     Screen.Search.route ->
-                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
+                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, tween(300))
                                     else -> null
                                 }
                             }
-                        ) {
+                        ) { backStackEntry ->
                             val viewModel = hiltViewModel<StationSearchViewModel>()
-                            StationSearchScreen(navController, viewModel)
+                            StationSearchScreen(navController, viewModel, backStackEntry.arguments?.getString("stationType")!!)
                         }
-                        composable(
-                            Screen.Settings.route,
-                            enterTransition = {
-                                when (targetState.destination.route) {
-                                    Screen.Search.route -> {
-                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
-                                    }
-                                    else -> null
-                                }
-                            },
-                            exitTransition = {
-                                when (targetState.destination.route) {
-                                    Screen.Search.route -> {
-                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
-                                    }
-                                    else -> null
-                                }
-                            },
-                            popEnterTransition = {
-                                when (initialState.destination.route) {
-                                    Screen.Search.route ->
-                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
-                                    else -> null
-                                }
-                            },
-                            popExitTransition = {
-                                when (targetState.destination.route) {
-                                    Screen.Search.route ->
-                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
-                                    else -> null
-                                }
-                            }
-                        ) {
-                            val viewModel = hiltViewModel<SearchViewModel>()
-                            SearchScreen(navController, viewModel)
-                        }
+//                        composable(
+//                            Screen.Settings.route,
+//                            enterTransition = {
+//                                when (targetState.destination.route) {
+//                                    Screen.Search.route -> {
+//                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
+//                                    }
+//                                    else -> null
+//                                }
+//                            },
+//                            exitTransition = {
+//                                when (targetState.destination.route) {
+//                                    Screen.Search.route -> {
+//                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, tween(700))
+//                                    }
+//                                    else -> null
+//                                }
+//                            },
+//                            popEnterTransition = {
+//                                when (initialState.destination.route) {
+//                                    Screen.Search.route ->
+//                                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
+//                                    else -> null
+//                                }
+//                            },
+//                            popExitTransition = {
+//                                when (targetState.destination.route) {
+//                                    Screen.Search.route ->
+//                                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, tween(700))
+//                                    else -> null
+//                                }
+//                            }
+//                        ) {
+//                            val viewModel = hiltViewModel<SearchViewModel>()
+//                            SearchScreen(navController, viewModel)
+//                        }
                     }
                 }
             }
