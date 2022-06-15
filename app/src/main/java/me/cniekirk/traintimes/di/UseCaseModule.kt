@@ -2,7 +2,6 @@ package me.cniekirk.traintimes.di
 
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.cniekirk.traintimes.domain.usecase.GetDepartureBoardUseCase
@@ -12,13 +11,11 @@ import me.cniekirk.traintimes.domain.usecase.GetStationsUseCaseImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UseCaseModule {
+abstract class UseCaseModule {
 
-    @Provides
-    fun provideGetDepartureBoardUseCase(getDepartureBoardUseCaseImpl: GetDepartureBoardUseCaseImpl): GetDepartureBoardUseCase
-        = getDepartureBoardUseCaseImpl
+    @Binds
+    abstract fun provideGetDepartureBoardUseCase(getDepartureBoardUseCaseImpl: GetDepartureBoardUseCaseImpl): GetDepartureBoardUseCase
 
-    @Provides
-    fun provideGetStationsUseCase(getStationsUseCaseImpl: GetStationsUseCaseImpl): GetStationsUseCase
-        = getStationsUseCaseImpl
+    @Binds
+    abstract fun provideGetStationsUseCase(getStationsUseCaseImpl: GetStationsUseCaseImpl): GetStationsUseCase
 }

@@ -2,7 +2,7 @@ package me.cniekirk.traintimes.di
 
 import android.content.Context
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
-import com.squareup.moshi.Moshi
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,10 +37,10 @@ class NetworkingModule {
     }
 
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: Lazy<OkHttpClient>): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://cniekirk.me/")
-            .client(okHttpClient)
+            .callFactory { okHttpClient.get().newCall(it) }
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }

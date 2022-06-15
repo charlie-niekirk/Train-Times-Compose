@@ -1,7 +1,7 @@
 package me.cniekirk.traintimes.features.search.ui
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import me.cniekirk.traintimes.di.UseCaseModule
@@ -13,13 +13,11 @@ import me.cniekirk.traintimes.domain.usecase.GetStationsUseCase
     components = [SingletonComponent::class],
     replaces = [UseCaseModule::class]
 )
-class FakeUseCaseModule {
+abstract class FakeUseCaseModule {
 
-    @Provides
-    fun provideGetDepartureBoardUseCase(fakeGetDepartureBoardUseCase: FakeGetDepartureBoardUseCase): GetDepartureBoardUseCase
-        = fakeGetDepartureBoardUseCase
+    @Binds
+    abstract fun provideGetDepartureBoardUseCase(fakeGetDepartureBoardUseCase: FakeGetDepartureBoardUseCase): GetDepartureBoardUseCase
 
-    @Provides
-    fun provideGetStationsUseCase(fakeGetStationsUseCase: FakeGetStationsUseCase): GetStationsUseCase
-        = fakeGetStationsUseCase
+    @Binds
+    abstract fun provideGetStationsUseCase(fakeGetStationsUseCase: FakeGetStationsUseCase): GetStationsUseCase
 }
