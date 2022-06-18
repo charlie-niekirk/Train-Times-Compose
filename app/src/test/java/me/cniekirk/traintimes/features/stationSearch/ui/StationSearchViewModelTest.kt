@@ -1,4 +1,4 @@
-package me.cniekirk.traintimes.features.stationsearch.ui
+package me.cniekirk.traintimes.features.stationSearch.ui
 
 import io.mockk.every
 import io.mockk.mockk
@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.cniekirk.traintimes.data.remote.model.Station
 import me.cniekirk.traintimes.domain.usecase.GetStationsUseCase
-import me.cniekirk.traintimes.features.stationsearch.mvi.StationSearchSideEffect
-import me.cniekirk.traintimes.features.stationsearch.mvi.StationSearchState
-import org.junit.Assert.*
+import me.cniekirk.traintimes.features.stationSearch.mvi.StationSearchSideEffect
+import me.cniekirk.traintimes.features.stationSearch.mvi.StationSearchState
 import org.junit.Before
 import org.junit.Test
 import org.orbitmvi.orbit.test

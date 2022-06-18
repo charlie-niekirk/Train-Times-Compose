@@ -58,4 +58,8 @@ class SearchViewModel @Inject constructor(
     fun onArrivalChanged(station: Station) = intent {
         reduce { state.copy(destinationStation = station) }
     }
+
+    fun onServiceClick(serviceId: String) = intent {
+        postSideEffect(SearchSideEffect.NavigateToServiceDetails(serviceId))
+    }
 }

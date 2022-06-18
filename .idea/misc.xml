@@ -13,6 +13,12 @@
         <entry key="../../../../layout/compose-model-1655137797602.xml" value="0.2795608108108108" />
         <entry key="../../../../layout/compose-model-1655137954043.xml" value="0.25" />
         <entry key="../../../../layout/compose-model-1655137991340.xml" value="0.2795608108108108" />
+        <entry key="../../../../layout/compose-model-1655296472979.xml" value="0.2795608108108108" />
+        <entry key="../../../../layout/compose-model-1655376186195.xml" value="0.38055555555555554" />
+        <entry key="app/src/main/java/me/cniekirk/traintimes/MainActivity.kt" value="0.24700149925037482" />
+        <entry key="app/src/main/java/me/cniekirk/traintimes/features/search/ui/SearchScreen.kt" value="0.25" />
+        <entry key="app/src/main/java/me/cniekirk/traintimes/features/serviceDetail/ui/ServiceDetailScreen.kt" value="0.375" />
+        <entry key="app/src/main/java/me/cniekirk/traintimes/features/stationsearch/ui/StationSearchScreen.kt" value="0.125" />
         <entry key="app/src/main/res/font/font.xml" value="0.11018518518518519" />
       </map>
     </option>

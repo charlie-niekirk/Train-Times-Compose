@@ -6,6 +6,7 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import me.cniekirk.traintimes.di.UseCaseModule
 import me.cniekirk.traintimes.domain.usecase.GetDepartureBoardUseCase
+import me.cniekirk.traintimes.domain.usecase.GetServiceDetailsUseCase
 import me.cniekirk.traintimes.domain.usecase.GetStationsUseCase
 
 @Module
@@ -20,4 +21,7 @@ abstract class FakeUseCaseModule {
 
     @Binds
     abstract fun provideGetStationsUseCase(fakeGetStationsUseCase: FakeGetStationsUseCase): GetStationsUseCase
+
+    @Binds
+    abstract fun provideGetServiceDetailsUseCase(fakeGetServiceDetailsUseCase: FakeGetServiceDetailsUseCase): GetServiceDetailsUseCase
 }

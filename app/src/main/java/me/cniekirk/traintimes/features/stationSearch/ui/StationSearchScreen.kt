@@ -1,4 +1,4 @@
-package me.cniekirk.traintimes.features.stationsearch.ui
+package me.cniekirk.traintimes.features.stationSearch.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -15,13 +15,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import me.cniekirk.traintimes.R
 import me.cniekirk.traintimes.data.remote.model.Station
-import me.cniekirk.traintimes.features.stationsearch.mvi.StationSearchSideEffect
-import me.cniekirk.traintimes.features.stationsearch.mvi.StationSearchState
+import me.cniekirk.traintimes.features.stationSearch.mvi.StationSearchSideEffect
+import me.cniekirk.traintimes.features.stationSearch.mvi.StationSearchState
+import me.cniekirk.traintimes.ui.util.DevicesPreview
 import me.cniekirk.traintimes.ui.util.M3TextField
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -111,7 +111,7 @@ private fun handleSideEffect(
 }
 
 @SuppressLint("UnrememberedMutableState")
-@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
+@DevicesPreview
 @Composable
 fun StationSearchContentPreview() {
     val state = mutableStateOf(StationSearchState(listOf(

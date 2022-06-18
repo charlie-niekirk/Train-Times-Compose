@@ -2,7 +2,6 @@ package me.cniekirk.traintimes.features.search.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,7 +9,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -19,16 +21,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import me.cniekirk.traintimes.R
-import me.cniekirk.traintimes.data.remote.model.Station
 import me.cniekirk.traintimes.data.remote.model.TrainService
 import me.cniekirk.traintimes.features.search.mvi.SearchSideEffect
 import me.cniekirk.traintimes.features.search.mvi.SearchState
-import me.cniekirk.traintimes.navigation.ObserveResult
-import me.cniekirk.traintimes.navigation.Screen
+import me.cniekirk.traintimes.ui.util.DevicesPreview
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -36,18 +34,22 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun SearchScreen(
     viewModel: SearchViewModel,
     navigateToDepartureSelection: () -> Unit,
-    navigateToDestinationSelection: () -> Unit
+    navigateToDestinationSelection: () -> Unit,
+    navigateToServiceDetails: (String) -> Unit
 ) {
     val state = viewModel.collectAsState()
     val context = LocalContext.current
 
-    viewModel.collectSideEffect { handleSideEffect(context, it, navigateToDepartureSelection, navigateToDestinationSelection) }
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(context, sideEffect, navigateToDepartureSelection, navigateToDestinationSelection, navigateToServiceDetails)
+    }
 
     SearchContent(
         state,
         { viewModel.getDepartures() },
         { viewModel.onDepartureClick() },
-        { viewModel.onArrivalClick() }
+        { viewModel.onArrivalClick() },
+        { viewModel.onServiceClick(it) }
     )
 }
 
@@ -56,7 +58,8 @@ fun SearchContent(
     state: State<SearchState>,
     onSearch: () -> Unit,
     onDepartureClick: () -> Unit,
-    onArrivalClick: () -> Unit
+    onArrivalClick: () -> Unit,
+    onServiceClick: (String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
@@ -79,7 +82,7 @@ fun SearchContent(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .weight(1f),
-            onClick = {}
+            onClick = { onServiceClick(it.rid ?: "") }
         )
         Button(
             modifier = Modifier
@@ -151,18 +154,19 @@ fun SelectableItem(
 }
 
 @SuppressLint("UnrememberedMutableState")
-@Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
+@DevicesPreview
 @Composable
 fun SearchContentPreview() {
     val state = mutableStateOf(SearchState())
-    SearchContent(state, {}, {}, {})
+    SearchContent(state, {}, {}, {}, {})
 }
 
 private fun handleSideEffect(
     context: Context,
     searchSideEffect: SearchSideEffect,
     navigateToDepartureSelection: () -> Unit,
-    navigateToDestinationSelection: () -> Unit
+    navigateToDestinationSelection: () -> Unit,
+    navigateToServiceDetails: (String) -> Unit
 ) {
     when (searchSideEffect) {
         is SearchSideEffect.NavigateToResults -> {
@@ -172,6 +176,9 @@ private fun handleSideEffect(
         SearchSideEffect.NavigateToDepartureStationSearch -> { navigateToDepartureSelection() }
         SearchSideEffect.NoDepartureSpecifiedError -> {
             Toast.makeText(context, R.string.error_station_not_selected, Toast.LENGTH_SHORT).show()
+        }
+        is SearchSideEffect.NavigateToServiceDetails -> {
+            navigateToServiceDetails(searchSideEffect.serviceId)
         }
     }
 }

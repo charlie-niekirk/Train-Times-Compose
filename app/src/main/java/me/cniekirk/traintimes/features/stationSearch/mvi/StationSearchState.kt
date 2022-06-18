@@ -1,4 +1,4 @@
-package me.cniekirk.traintimes.features.stationsearch.mvi
+package me.cniekirk.traintimes.features.stationSearch.mvi
 
 import me.cniekirk.traintimes.data.remote.model.Station
 

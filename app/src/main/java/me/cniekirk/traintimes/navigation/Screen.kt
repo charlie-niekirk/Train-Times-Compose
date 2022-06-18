@@ -14,7 +14,7 @@ sealed class Screen(val route: String, @StringRes val name: Int, val icon: Image
     object RoutePlanner : Screen(route = "routePlanner", R.string.route_planner, Icons.Filled.Add)
     object TrainListing : Screen(route = "trainListing/{}", R.string.listing, Icons.Filled.Settings)
     object Settings : Screen(route = "settings", R.string.settings, Icons.Filled.Settings)
-    object ServiceDetails : Screen(route = "details/{id}", R.string.details, Icons.Filled.Settings) {
+    object ServiceDetails : Screen(route = "details/{serviceId}", R.string.details, Icons.Filled.Settings) {
         fun createRoute(id: String) = "details/$id"
     }
 }

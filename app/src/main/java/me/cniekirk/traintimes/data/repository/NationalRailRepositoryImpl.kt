@@ -3,6 +3,7 @@ package me.cniekirk.traintimes.data.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import me.cniekirk.traintimes.data.remote.model.DepartureBoard
+import me.cniekirk.traintimes.data.remote.model.ServiceDetails
 import me.cniekirk.traintimes.data.remote.model.Station
 import me.cniekirk.traintimes.data.remote.service.NationalRailService
 import me.cniekirk.traintimes.domain.repository.NationalRailRepository
@@ -28,6 +29,13 @@ class NationalRailRepositoryImpl @Inject constructor(
 
     override fun getDepartures(departureStation: String, arrivalStation: String): Flow<DepartureBoard> = flow {
         val response = nationalRailService.getDepartures(departureStation, arrivalStation)
+        if (response.isSuccessful) {
+            response.body()?.let { emit(it) }
+        }
+    }
+
+    override fun getServiceDetails(service: String): Flow<ServiceDetails> = flow {
+        val response = nationalRailService.getServiceDetails(service)
         if (response.isSuccessful) {
             response.body()?.let { emit(it) }
         }

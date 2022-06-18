@@ -1,15 +1,11 @@
-package me.cniekirk.traintimes.features.stationsearch.ui
+package me.cniekirk.traintimes.features.stationSearch.ui
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import me.cniekirk.traintimes.data.remote.model.Station
-import me.cniekirk.traintimes.di.IoDispatcher
 import me.cniekirk.traintimes.domain.usecase.GetStationsUseCase
-import me.cniekirk.traintimes.features.stationsearch.mvi.StationSearchSideEffect
-import me.cniekirk.traintimes.features.stationsearch.mvi.StationSearchState
-import org.orbitmvi.orbit.Container
+import me.cniekirk.traintimes.features.stationSearch.mvi.StationSearchSideEffect
+import me.cniekirk.traintimes.features.stationSearch.mvi.StationSearchState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
